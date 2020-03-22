@@ -70,6 +70,7 @@ $ ./mvnw test
 - https://rclayton.silvrback.com/use-state-machines
 - https://en.wikipedia.org/wiki/Finite-state_machine
 ---
+Created with :heart: by [Ivan Dugalic](https://idugalic.github.io/)
 
 [maven]: https://maven.apache.org/ (Maven)
 [axon]: https://axoniq.io/ (Axon)
