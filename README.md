@@ -22,6 +22,26 @@ Finite State Machines (FSM, or in the context of this post, simply "State Machin
 
 - From `Order*Payed*` you can transition to `Order*Delivered*` state. In this state you should not be able to add more items to the order or to cancel the order, so these command handlers will be omitted in this case.
 
+![Order State Machine](.assets/state-machine.svg)
+
+```puml
+@startuml
+skinparam state {
+  StartColor DarkGreen
+  EndColor DarkRed
+  BackgroundColor LightBlue
+  BackgroundColor<<Warning>> Olive
+  BorderColor Red
+}
+hide empty description
+
+[*] --> OrderCreated
+OrderCreated --> OrderPaid
+OrderPaid -> OrderDelivered
+OrderDelivered --> [*]
+@enduml
+```
+
 The [Finite-State-Machine pattern](https://en.wikipedia.org/wiki/Finite-state_machine) is a formalization of an entity's life cycle and thus, forces us to think about our models in terms of behavior. The consequence is that we tend to design better systems when we use the pattern. The process of discovery helps us identify the behaviors of each state. Behaviors expand into actions or "intents" clients can request from the entity. State transitions indicate events that need to be published.
 
 Axon Framework fits very good here. Some of the Axon features used in this demo are:
