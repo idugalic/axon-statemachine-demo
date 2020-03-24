@@ -1,4 +1,4 @@
-package pro.idugalic.axonstatemachine.command.api;
+package pro.idugalic.axonstatemachine.command.api.event;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(exclude = "aggregateIdentifier")
-public class OrderCancellationRefusedEvent {
+public abstract class AbstractOrderEvent {
 
     private String aggregateIdentifier;
+
 }
