@@ -3,6 +3,7 @@ package pro.idugalic.axonstatemachine.command;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
@@ -19,7 +20,7 @@ import static org.axonframework.modelling.command.AggregateLifecycle.*;
 @Aggregate
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
-final class OrderPaid extends Order {
+final class OrderPaid extends CancelableOrder {
 
     OrderPaid(String orderId, List<OrderItem> items) {
         apply(new OrderPaidEvent(UUID.randomUUID().toString(), orderId, items));
@@ -32,6 +33,7 @@ final class OrderPaid extends Order {
                 createNew(OrderDelivered.class, () -> new OrderDelivered(orderId, items));
             } catch (Exception e) {
                 log.error("Can not create OrderDelivered aggregate", e);
+                throw new CommandExecutionException("Can't transition to DELIVERED state", e);
             }
         });
     }

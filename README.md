@@ -14,13 +14,13 @@ This pattern is better than the basic `if else / switch` based approach in the w
 ### Finite State Machines
 Finite State Machines (FSM, or in the context of this post, simply "State Machines") are a methodology for modeling the behavior of an entity with an established lifecycle. The lifecycle is defined by an enumerated set of states known at the time of implementation (this is where the term "finite" comes from).
 
-- For our `Order` we will use `Order*Created*` state aggregate. This is initial state and adding items to an order (for example) can only happen in this state.
+- For our `Order` we will use `Order*Created*` state aggregate. This is initial state and adding items to an order (for example) can only happen in this state. You are able to Cancel, and transit to `Order*Canceled*`.
 
 - Each state can transition between zero-or-more possible states, including returning to previous states. State transitions are executed by external stimuli (commands/events).
 
-- From `Order*Created*` you can transition to `Order*Payed*` state. In this state you should not be able to add more items to the order, so these command handlers will be omitted in this case. But maybe you should be able to cancel.
+- From `Order*Created*` you can transition to `Order*Payed*`. In `Order*Payed*` state you should not be able to add more items to the order, so these command handlers will be omitted in this case. You are able to Cancel, and transit to `Order*Canceled*`
 
-- From `Order*Payed*` you can transition to `Order*Delivered*` state. In this state you should not be able to add more items to the order or to cancel the order, so these command handlers will be omitted in this case.
+- From `Order*Payed*` you can transition to `Order*Delivered*`. In `Order*Delivered*` state you should NOT be able to add more items to the order, so these command handlers will be omitted in this case. You are NOT able to Cancel (`OrderCancellationRefusedEvent`)
 
 ![Order State Machine](.assets/state-machine.svg)
 
@@ -37,8 +37,11 @@ hide empty description
 
 [*] --> OrderCreated
 OrderCreated --> OrderPaid
+OrderCreated --> OrderCanceled
 OrderPaid -> OrderDelivered
+OrderPaid -> OrderCanceled
 OrderDelivered --> [*]
+OrderCanceled --> [*]
 @enduml
 ```
 
