@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pro.idugalic.axonstatemachine.command.api.CreateOrderCommand;
-import pro.idugalic.axonstatemachine.command.api.MarkOrderAsDeliveredCommand;
-import pro.idugalic.axonstatemachine.command.api.MarkOrderAsPaidCommand;
+import pro.idugalic.axonstatemachine.command.api.command.CreateOrderCommand;
+import pro.idugalic.axonstatemachine.command.api.command.MarkOrderAsCancelledCommand;
+import pro.idugalic.axonstatemachine.command.api.command.MarkOrderAsDeliveredCommand;
+import pro.idugalic.axonstatemachine.command.api.command.MarkOrderAsPaidCommand;
 
 @CrossOrigin("*")
 @RestController
@@ -33,9 +34,16 @@ public class MyRestController {
         commandGateway.send(new MarkOrderAsPaidCommand(request.getAggregateIdentifier()));
         return ResponseEntity.ok().build();
     }
+
     @PostMapping(value = "/orders/deliver")
-    public ResponseEntity<Object> deliverOrder(@RequestBody final PayOrderRequest request) {
+    public ResponseEntity<Object> deliverOrder(@RequestBody final DeliverOrderRequest request) {
         commandGateway.send(new MarkOrderAsDeliveredCommand(request.getAggregateIdentifier()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/orders/cancel")
+    public ResponseEntity<Object> cancelOrder(@RequestBody final CancelOrderRequest request) {
+        commandGateway.send(new MarkOrderAsCancelledCommand(request.getAggregateIdentifier()));
         return ResponseEntity.ok().build();
     }
 }

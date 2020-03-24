@@ -1,20 +1,21 @@
-package pro.idugalic.axonstatemachine.command.api;
+package pro.idugalic.axonstatemachine.command.api.command;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
+import pro.idugalic.axonstatemachine.command.api.OrderItem;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CreateOrderCommand {
+final public class CreateOrderCommand {
 
-    public CreateOrderCommand(String orderId, List<OrderItem> items) {
+    public CreateOrderCommand(String orderId, ArrayList<OrderItem> items) {
         this.aggregateIdentifier = UUID.randomUUID().toString();
         this.orderId = orderId;
         this.items = items;
@@ -25,5 +26,5 @@ public class CreateOrderCommand {
 
     private String orderId;
 
-    private List<OrderItem> items;
+    private ArrayList<OrderItem> items;
 }

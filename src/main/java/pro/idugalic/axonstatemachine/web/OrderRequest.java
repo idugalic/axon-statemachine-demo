@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import pro.idugalic.axonstatemachine.command.api.OrderItem;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
-public class OrderRequest implements Serializable {
+final public class OrderRequest implements Serializable {
 
     private String id;
-    private List<OrderItem> items;
+    private ArrayList<OrderItem> items;
 }

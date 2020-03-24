@@ -1,4 +1,4 @@
-package pro.idugalic.axonstatemachine.command.api;
+package pro.idugalic.axonstatemachine.command.api.command;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MarkOrderAsCancelledCommand {
+final public class MarkOrderAsDeliveredCommand {
 
     @TargetAggregateIdentifier
     private String aggregateIdentifier;

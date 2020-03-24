@@ -1,4 +1,4 @@
-package pro.idugalic.axonstatemachine.command.api;
+package pro.idugalic.axonstatemachine.command.api.command;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,10 +9,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-final public class AddItemToTheOrderCommand {
+final public class MarkOrderAsPaidCommand {
 
     @TargetAggregateIdentifier
     private String aggregateIdentifier;
-    private String orderId;
-    private OrderItem orderItem;
+
 }

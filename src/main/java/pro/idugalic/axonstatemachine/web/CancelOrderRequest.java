@@ -10,7 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
-final public class DeliverOrderRequest implements Serializable {
+final public class CancelOrderRequest implements Serializable {
 
     private String aggregateIdentifier;
 

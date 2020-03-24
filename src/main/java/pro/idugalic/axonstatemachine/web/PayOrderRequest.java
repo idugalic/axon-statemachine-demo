@@ -10,7 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
-public class PayOrderRequest implements Serializable {
+final public class PayOrderRequest implements Serializable {
 
     private String aggregateIdentifier;
 

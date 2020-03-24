@@ -6,38 +6,39 @@ import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import org.mockito.junit.jupiter.*;
-import pro.idugalic.axonstatemachine.command.api.AddItemToTheOrderCommand;
-import pro.idugalic.axonstatemachine.command.api.CreateOrderCommand;
-import pro.idugalic.axonstatemachine.command.api.ItemAddedEvent;
-import pro.idugalic.axonstatemachine.command.api.MarkOrderAsCancelledCommand;
-import pro.idugalic.axonstatemachine.command.api.MarkOrderAsPaidCommand;
-import pro.idugalic.axonstatemachine.command.api.OrderCancelationInitiatedEvent;
-import pro.idugalic.axonstatemachine.command.api.OrderCanceledEvent;
-import pro.idugalic.axonstatemachine.command.api.OrderCreatedEvent;
+import pro.idugalic.axonstatemachine.command.api.OrderStatus;
+import pro.idugalic.axonstatemachine.command.api.command.AddItemToTheOrderCommand;
+import pro.idugalic.axonstatemachine.command.api.command.CreateOrderCommand;
+import pro.idugalic.axonstatemachine.command.api.event.ItemAddedEvent;
+import pro.idugalic.axonstatemachine.command.api.command.MarkOrderAsCancelledCommand;
+import pro.idugalic.axonstatemachine.command.api.command.MarkOrderAsPaidCommand;
+import pro.idugalic.axonstatemachine.command.api.event.OrderCanceledEvent;
+import pro.idugalic.axonstatemachine.command.api.event.OrderCancellationInitiatedEvent;
+import pro.idugalic.axonstatemachine.command.api.event.OrderCreatedEvent;
 import pro.idugalic.axonstatemachine.command.api.OrderItem;
-import pro.idugalic.axonstatemachine.command.api.OrderPaidEvent;
-import pro.idugalic.axonstatemachine.command.api.OrderPayingInitiatedEvent;
+import pro.idugalic.axonstatemachine.command.api.event.OrderPaidEvent;
+import pro.idugalic.axonstatemachine.command.api.event.OrderPayingInitiatedEvent;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderCreatedTest {
 
-    private static List<OrderItem> items;
+    private static ArrayList<OrderItem> items;
     private FixtureConfiguration<OrderCreated> fixture = new AggregateTestFixture<>(OrderCreated.class);
 
     @BeforeAll
     static void before() {
-        items = Arrays.asList(new OrderItem("id1", "name1", 1L, BigDecimal.TEN),
-                              new OrderItem("id2", "name2", 3L, BigDecimal.ONE));
+        items = new ArrayList<>();
+        items.add(new OrderItem("id1", "name1", 1L, BigDecimal.TEN));
+        items.add(new OrderItem("id2", "name2", 3L, BigDecimal.ONE));
     }
 
     @Test
     public void orderCreatedTest() {
         CreateOrderCommand createOrderCommand = new CreateOrderCommand("aggregate-order1", "order1", items);
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", items);
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", OrderStatus.NULL, items);
 
         fixture.given()
                .when(createOrderCommand)
@@ -47,8 +48,8 @@ public class OrderCreatedTest {
     @Test
     public void itemAddedTest() {
 
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", items);
-        OrderItem orderItem = new OrderItem("3", "orederItem1", 1l, BigDecimal.TEN);
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", OrderStatus.NULL, items);
+        OrderItem orderItem = new OrderItem("3", "orederItem1", 1L, BigDecimal.TEN);
         AddItemToTheOrderCommand addItemToTheOrderCommand = new AddItemToTheOrderCommand("aggregate-order1", "order1", orderItem);
         ItemAddedEvent itemAddedEvent = new ItemAddedEvent("aggregate-order1", "order1", orderItem);
 
@@ -72,25 +73,25 @@ public class OrderCreatedTest {
     @Test
     public void orderCanceledTest() {
 
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", items);
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", OrderStatus.NULL, items);
         MarkOrderAsCancelledCommand markOrderAsCancelledCommand = new MarkOrderAsCancelledCommand("aggregate-order1");
-        OrderCancelationInitiatedEvent orderCancelationInitiatedEvent = new OrderCancelationInitiatedEvent("aggregate-order1");
-        OrderCanceledEvent orderCanceledEvent = new OrderCanceledEvent("", "order1", items);
+        OrderCancellationInitiatedEvent orderCancellationInitiatedEvent = new OrderCancellationInitiatedEvent("aggregate-order1");
+        OrderCanceledEvent orderCanceledEvent = new OrderCanceledEvent("", "order1", OrderStatus.NEW, items);
 
         fixture.given(orderCreatedEvent)
                .when(markOrderAsCancelledCommand)
                .expectSuccessfulHandlerExecution()
-               .expectEvents(orderCancelationInitiatedEvent, orderCanceledEvent)
+               .expectEvents(orderCancellationInitiatedEvent, orderCanceledEvent)
                .expectMarkedDeleted();
     }
 
     @Test
     public void orderPaidTest() throws Exception {
 
-        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", items);
+        OrderCreatedEvent orderCreatedEvent = new OrderCreatedEvent("aggregate-order1", "order1", OrderStatus.NULL, items);
         MarkOrderAsPaidCommand markOrderAsPaidCommand = new MarkOrderAsPaidCommand("aggregate-order1");
         OrderPayingInitiatedEvent orderPayingInitiatedEvent = new OrderPayingInitiatedEvent("aggregate-order1");
-        OrderPaidEvent orderPaidEvent = new OrderPaidEvent("", "order1", items);
+        OrderPaidEvent orderPaidEvent = new OrderPaidEvent("", "order1", OrderStatus.NEW, items);
 
         fixture.given(orderCreatedEvent)
                .when(markOrderAsPaidCommand)

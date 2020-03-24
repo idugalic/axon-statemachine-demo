@@ -3,6 +3,7 @@ package pro.idugalic.axonstatemachine.command.api;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Getter
+@EqualsAndHashCode
 public class OrderItem {
 
     private String id;
