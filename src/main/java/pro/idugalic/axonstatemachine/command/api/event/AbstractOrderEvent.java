@@ -1,12 +1,9 @@
 package pro.idugalic.axonstatemachine.command.api.event;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(exclude = "aggregateIdentifier")

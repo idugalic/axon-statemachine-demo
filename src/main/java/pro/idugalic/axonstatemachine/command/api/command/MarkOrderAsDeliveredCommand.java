@@ -1,12 +1,10 @@
 package pro.idugalic.axonstatemachine.command.api.command;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final public class MarkOrderAsDeliveredCommand {
